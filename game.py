@@ -1,5 +1,7 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
+from joblib import Parallel, delayed
 from config import H, W, is_in, PURE_MCT_SEARCH_NUM
 
 
@@ -103,15 +105,18 @@ def play_out(st: State):
 
 
 # 原始モンテカルロ木探索
-def pure_mct_search_action(st: State):
-    legal_actions = st.legal_actions()
-    scores = np.zeros(len(legal_actions))
-    for i, action in enumerate(legal_actions):
-        next_st = st.next_state(action)
-        for _ in range(PURE_MCT_SEARCH_NUM):
-            scores[i] -= play_out(next_st)
+def pure_mct_search_action(num):
+    def sub_routine(st: State):
+        legal_actions = st.legal_actions()
+        scores = np.zeros(len(legal_actions))
+        for i, action in enumerate(legal_actions):
+            next_st = st.next_state(action)
+            for _ in range(num):
+                scores[i] -= play_out(next_st)
 
-    return legal_actions[np.argmax(scores)]
+        return legal_actions[np.argmax(scores)]
+
+    return sub_routine
 
 
 # プレイヤーを二人指定し，結果を返す
@@ -126,5 +131,33 @@ def play(next_actions):
         return -1 if st.is_first_player() else 1
 
 
+# プレイヤーを二人指定し，指定回数だけ対戦させたときの勝率を計算する
+def battle_players(next_actions, num):
+    scores = np.zeros(2)
+    for i in range(num):
+        print("Game {}/{}".format(i + 1, num))
+        score = play(next_actions)
+        scores[0] += score
+        scores[1] -= score
+
+    scores /= num
+    return scores
+
+
+def sub(num):
+    return battle_players([random_action, pure_mct_search_action(num + 1)], 100)[1]
+
+
+def evaluate_strength_for_num():
+    x_label = range(1, 101, 1)
+    result = Parallel(n_jobs=-1)(delayed(sub)(num_i) for num_i in range(100))
+
+    plt.xlabel("num")
+    plt.ylabel("score")
+    plt.plot(x_label, result, label="score")
+    plt.legend(loc="best")
+    plt.savefig("images/random_vs_pure_mct_search.png")
+
+
 if __name__ == '__main__':
-    play([player_action, pure_mct_search_action])
+    evaluate_strength_for_num()
