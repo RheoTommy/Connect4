@@ -2,7 +2,7 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 from joblib import Parallel, delayed
-from config import H, W, is_in, PURE_MCT_SEARCH_NUM
+from config import H, W, is_in
 
 
 # Connect4 の盤面を管理
@@ -135,7 +135,6 @@ def play(next_actions):
 def battle_players(next_actions, num):
     scores = np.zeros(2)
     for i in range(num):
-        print("Game {}/{}".format(i + 1, num))
         score = play(next_actions)
         scores[0] += score
         scores[1] -= score
@@ -144,13 +143,15 @@ def battle_players(next_actions, num):
     return scores
 
 
+# ランダム試行 num+1 回の原始モンテカルロ木探索プレイヤーのランダムプレイヤーに対するスコアを求める
 def sub(num):
     return battle_players([random_action, pure_mct_search_action(num + 1)], 100)[1]
 
 
+# ランダム試行 1..=100 回の原始モンテカルロ木探索プレイヤーのランダムプレイヤーに対するスコアを求める
 def evaluate_strength_for_num():
     x_label = range(1, 101, 1)
-    result = Parallel(n_jobs=-1)(delayed(sub)(num_i) for num_i in range(100))
+    result = Parallel(n_jobs=-1, verbose=10)(delayed(sub)(num_i) for num_i in range(100))
 
     plt.xlabel("num")
     plt.ylabel("score")
