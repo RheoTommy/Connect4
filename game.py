@@ -86,6 +86,7 @@ def random_action(st: State):
 
 # コンソールから選択
 def player_action(st: State):
+    print(st)
     print(st.legal_actions())
     action = int(input())
     return action
@@ -102,7 +103,7 @@ def play_out(st: State):
 
 
 # 原始モンテカルロ木探索
-def pure_mct_search(st: State):
+def pure_mct_search_action(st: State):
     legal_actions = st.legal_actions()
     scores = np.zeros(len(legal_actions))
     for i, action in enumerate(legal_actions):
@@ -113,17 +114,17 @@ def pure_mct_search(st: State):
     return legal_actions[np.argmax(scores)]
 
 
+# プレイヤーを二人指定し，結果を返す
+def play(next_actions):
+    st = State()
+    while not st.is_done():
+        next_action = next_actions[0] if st.is_first_player() else next_actions[1]
+        st = st.next_state(next_action(st))
+    if st.is_draw():
+        return 0
+    else:
+        return -1 if st.is_first_player() else 1
+
+
 if __name__ == '__main__':
-    state = State()
-    next_actions = [player_action, pure_mct_search]
-    print(state)
-
-    while True:
-        if state.is_done():
-            break
-
-        next_action = next_actions[0] if state.is_first_player() else next_actions[1]
-        state = state.next_state(next_action(state))
-
-        print(state)
-        print()
+    play([player_action, pure_mct_search_action])
