@@ -115,10 +115,12 @@ def battle_players(next_actions, num, debug=False):
     scores = np.zeros(2)
     for i in range(num):
         if debug:
-            print("Battle {}/{}".format(i + 1, num))
+            print("\rBattle {}/{}".format(i + 1, num), end=" ")
         score = play(next_actions)
         scores[0] += score
         scores[1] -= score
+    if debug:
+        print()
 
     scores /= num
     return scores

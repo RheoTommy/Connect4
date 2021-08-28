@@ -1,13 +1,11 @@
 from game import State
 from pv_mct_search import pv_mct_search
-from config import OUTPUT_SHAPE, SELF_PLAY_TEMP, SELF_PLAY_COUNT
+from config import OUTPUT_SHAPE, SELF_PLAY_TEMP, SELF_PLAY_COUNT, DENSE_BEST_FILE
 from datetime import datetime
 from tensorflow.keras.models import load_model, Model
 from tensorflow.keras import backend as bk
-from pathlib import Path
 import numpy as np
 import pickle
-import os
 
 
 # 先手にとってのゲーム結果
@@ -20,7 +18,7 @@ def first_player_value(st: State):
 # 学習データの保存
 def write_data(history):
     now = datetime.now()
-    path = "../data/{:04}{:02}{:02}{:02}{:02}{:02}".format(
+    path = "../data/{:04}{:02}{:02}{:02}{:02}{:02}.history".format(
         now.year, now.month, now.day, now.hour, now.minute, now.second
     )
     with open(path, mode="wb") as f:
@@ -36,7 +34,7 @@ def play(model):
         policies = [0] * OUTPUT_SHAPE
         for ac, policy in zip(st.legal_actions(), policies):
             policies[ac] = policy
-        history.append(([[st.pieces, st.enemy_pieces, st.block], policies, None]))
+        history.append([[st.pieces, st.enemy_pieces, st.block], policies, None])
         action = np.random.choice(st.legal_actions(), p=scores)
         st = st.next_state(action)
 
@@ -57,7 +55,7 @@ def self_play(best_model_path, debug=False):
         h = play(model)
         history.append(h)
         if debug:
-            print("Self Play {}/{}".format(i + 1, SELF_PLAY_COUNT), end=" ")
+            print("\rSelf Play {}/{}".format(i + 1, SELF_PLAY_COUNT), end=" ")
     if debug:
         print()
 
@@ -68,4 +66,4 @@ def self_play(best_model_path, debug=False):
 
 
 if __name__ == '__main__':
-    self_play("../models/resnet_best.h5", True)
+    self_play(DENSE_BEST_FILE, True)
