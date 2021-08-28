@@ -102,6 +102,6 @@ def pv_mct_search(model: Model, temp):
         return scores
 
     def action(st: State):
-        return st.legal_actions()[np.argmax(score(st))]
+        return np.random.choice(st.legal_actions(), p=score(st))
 
     return score, action

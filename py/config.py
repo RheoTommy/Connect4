@@ -3,18 +3,18 @@ H = 10
 W = 10
 
 # ニューラルネットワークの入力シェイプ
-INPUT_SHAPE = (15, 15, 3)
+INPUT_SHAPE = (10, 10, 3)
 
 # ニューラルネットワークの出力シェイプ
-OUTPUT_SHAPE = 15
+OUTPUT_SHAPE = 10
 
 # モデルとファイル名
 DENSE_LATEST_FILE = "models/dense_latest.h5"
-DENSE_BEST_FILE = "../models/dense_best.h5"
+DENSE_BEST_FILE = "models/dense_best.h5"
 CNN_LATEST_FILE = "models/cnn_latest.h5"
-CNN_BEST_FILE = "../models/cnn_best.h5"
+CNN_BEST_FILE = "models/cnn_best.h5"
 RESNET_LATEST_FILE = "models/resnet_latest.h5"
-RESNET_BEST_FILE = "../models/resnet_best.h5"
+RESNET_BEST_FILE = "models/resnet_best.h5"
 
 # Dense のニューロン数
 DENSE_N_SIZE = 128
@@ -29,13 +29,19 @@ RESNET_N_SIZE = 128
 RESNET_RESIDUAL_SIZE = 16
 
 # 原始モンテカルロ木探索の各アクションのランダム試行回数
-PURE_MCT_SEARCH_NUM = 200
+PURE_MCT_SEARCH_NUM = 100
 
 # UCT モンテカルロ木探索のランダム試行回数
-UCT_MCT_SEARCH_NUM = 200
+UCT_MCT_SEARCH_NUM = 100
 
 # ニューラルネットワーク近似を利用したモンテカルロ木探索のランダム試行回数
-PV_MCT_SEARCH_NUM = 50
+PV_MCT_SEARCH_NUM = 100
+
+# セルフプレイ一回のゲーム数
+SELF_PLAY_COUNT = 5
+
+# セルフプレイ時の温度パラメータ
+SELF_PLAY_TEMP = 1.0
 
 
 # 盤面内かどうか
