@@ -6,6 +6,7 @@ from tensorflow.keras.models import load_model, Model
 from tensorflow.keras import backend as bk
 import numpy as np
 import pickle
+import ray
 
 
 # 先手にとってのゲーム結果

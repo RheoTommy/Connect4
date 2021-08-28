@@ -4,7 +4,6 @@ from train_network import train_network
 from evaluating import evaluate_change, evaluate_player
 from config import DENSE_BEST_FILE, CNN_BEST_FILE, RESNET_BEST_FILE, DENSE_LATEST_FILE, RESNET_LATEST_FILE, \
     CNN_LATEST_FILE, CYCLE_NUM
-from joblib import Parallel, delayed
 
 
 def cycle(files):

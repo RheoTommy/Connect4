@@ -3,3 +3,5 @@ numba~=0.54.0
 matplotlib~=3.4.3
 joblib~=1.0.1
 tensorflow-gpu~=2.6.0
+pathos~=0.2.8
+ray~=1.6.0
