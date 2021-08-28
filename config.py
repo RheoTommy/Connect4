@@ -29,7 +29,13 @@ RESNET_N_SIZE = 128
 RESNET_RESIDUAL_SIZE = 16
 
 # 原始モンテカルロ木探索の各アクションのランダム試行回数
-PURE_MCT_SEARCH_NUM = 50
+PURE_MCT_SEARCH_NUM = 200
+
+# UCT モンテカルロ木探索のランダム試行回数
+UCT_MCT_SEARCH_NUM = 200
+
+# ニューラルネットワーク近似を利用したモンテカルロ木探索のランダム試行回数
+PV_MCT_SEARCH_NUM = 50
 
 
 # 盤面内かどうか

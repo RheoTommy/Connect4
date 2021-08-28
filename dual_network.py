@@ -41,6 +41,8 @@ def make_dense_model():
     x = Dropout(0.5)(x)
     x = Dense(DENSE_N_SIZE, activation="relu")(x)
     x = Dropout(0.5)(x)
+    x = Dense(DENSE_N_SIZE, activation="relu")(x)
+    x = GlobalAveragePooling2D()(x)
 
     p = Dense(OUTPUT_SHAPE, activation="softmax", kernel_regularizer=l2(0.0005), name="pi")(x)
     v = Dense(1, kernel_regularizer=l2(0.0005))(x)
