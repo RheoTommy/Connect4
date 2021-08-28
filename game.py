@@ -1,7 +1,5 @@
 import random
 import numpy as np
-import matplotlib.pyplot as plt
-from joblib import Parallel, delayed
 from config import H, W, is_in
 
 
@@ -86,14 +84,6 @@ def random_action(st: State):
     return legal_actions[random.randint(0, len(legal_actions) - 1)]
 
 
-# コンソールから選択
-def player_action(st: State):
-    print(st)
-    print(st.legal_actions())
-    action = int(input())
-    return action
-
-
 # 完全ランダムでプレイアウトし，結果を返す
 def play_out(st: State):
     if st.is_lose():
@@ -104,27 +94,16 @@ def play_out(st: State):
         return -play_out(st.next_state(random_action(st)))
 
 
-# 原始モンテカルロ木探索
-def pure_mct_search_action(num):
-    def sub_routine(st: State):
-        legal_actions = st.legal_actions()
-        scores = np.zeros(len(legal_actions))
-        for i, action in enumerate(legal_actions):
-            next_st = st.next_state(action)
-            for _ in range(num):
-                scores[i] -= play_out(next_st)
-
-        return legal_actions[np.argmax(scores)]
-
-    return sub_routine
-
-
 # プレイヤーを二人指定し，結果を返す
-def play(next_actions):
+def play(next_actions, debug=False):
     st = State()
     while not st.is_done():
+        if debug:
+            print(st)
         next_action = next_actions[0] if st.is_first_player() else next_actions[1]
         st = st.next_state(next_action(st))
+    if debug:
+        print(st)
     if st.is_draw():
         return 0
     else:
@@ -132,9 +111,11 @@ def play(next_actions):
 
 
 # プレイヤーを二人指定し，指定回数だけ対戦させたときの勝率を計算する
-def battle_players(next_actions, num):
+def battle_players(next_actions, num, debug=False):
     scores = np.zeros(2)
     for i in range(num):
+        if debug:
+            print("Battle {}/{}".format(i + 1, num))
         score = play(next_actions)
         scores[0] += score
         scores[1] -= score
@@ -143,22 +124,9 @@ def battle_players(next_actions, num):
     return scores
 
 
-# ランダム試行 num+1 回の原始モンテカルロ木探索プレイヤーのランダムプレイヤーに対するスコアを求める
-def sub(num):
-    return battle_players([random_action, pure_mct_search_action(num + 1)], 100)[1]
-
-
-# ランダム試行 1..=100 回の原始モンテカルロ木探索プレイヤーのランダムプレイヤーに対するスコアを求める
-def evaluate_strength_for_num():
-    x_label = range(1, 101, 1)
-    result = Parallel(n_jobs=-1, verbose=10)(delayed(sub)(num_i) for num_i in range(100))
-
-    plt.xlabel("num")
-    plt.ylabel("score")
-    plt.plot(x_label, result, label="score")
-    plt.legend(loc="best")
-    plt.savefig("images/random_vs_pure_mct_search.png")
-
-
-if __name__ == '__main__':
-    evaluate_strength_for_num()
+# コンソールから選択
+def player_action(st: State):
+    print(st)
+    print(st.legal_actions())
+    action = int(input())
+    return action

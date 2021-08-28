@@ -66,6 +66,12 @@ def make_cnn_model():
     x = Activation("relu")(x)
     x = conv(CNN_N_SIZE)(x)
     x = Activation("relu")(x)
+    x = conv(CNN_N_SIZE)(x)
+    x = Activation("relu")(x)
+    x = conv(CNN_N_SIZE)(x)
+    x = Activation("relu")(x)
+    x = conv(CNN_N_SIZE)(x)
+    x = Activation("relu")(x)
     x = GlobalAveragePooling2D()(x)
 
     p = Dense(OUTPUT_SHAPE, activation="softmax", kernel_regularizer=l2(0.0005), name="pi")(x)
