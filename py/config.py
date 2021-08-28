@@ -52,6 +52,8 @@ BATCH_SIZE = 128
 # 評価時の対戦回数
 EVAL_COUNT = 25
 
+# 学習サイクルの実行回数
+CYCLE_NUM = 10
 
 # 盤面内かどうか
 def is_in(x, y):

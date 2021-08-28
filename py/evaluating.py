@@ -2,7 +2,7 @@ from shutil import copy
 
 from tensorflow.keras.models import Model, load_model
 from pv_mct_search import pv_mct_search
-from py.config import EVAL_COUNT, DENSE_LATEST_FILE, DENSE_BEST_FILE
+from py.config import EVAL_COUNT, DENSE_LATEST_FILE, DENSE_BEST_FILE, PURE_MCT_SEARCH_NUM, UCT_MCT_SEARCH_NUM
 from py.game import play, random_action
 import tensorflow.keras.backend as bk
 
@@ -69,10 +69,10 @@ def evaluate_player(best_file):
     next_actions = [pv_action, random_action]
     evaluate_algo("{} VS Random".format(best_file), next_actions)
 
-    next_actions = [pv_action, pure_mct_search_action]
+    next_actions = [pv_action, pure_mct_search_action(PURE_MCT_SEARCH_NUM)]
     evaluate_algo("{} VS Pure mct search".format(best_file), next_actions)
 
-    next_actions = [pv_action, uct_mct_search_action]
+    next_actions = [pv_action, uct_mct_search_action(UCT_MCT_SEARCH_NUM, 10)]
     evaluate_algo("{} VS UCT mct search action".format(best_file), next_actions)
 
     bk.clear_session()
