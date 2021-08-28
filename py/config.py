@@ -10,11 +10,11 @@ OUTPUT_SHAPE = 15
 
 # モデルとファイル名
 DENSE_LATEST_FILE = "models/dense_latest.h5"
-DENSE_BEST_FILE = "models/dense_best.h5"
+DENSE_BEST_FILE = "../models/dense_best.h5"
 CNN_LATEST_FILE = "models/cnn_latest.h5"
-CNN_BEST_FILE = "models/cnn_best.h5"
+CNN_BEST_FILE = "../models/cnn_best.h5"
 RESNET_LATEST_FILE = "models/resnet_latest.h5"
-RESNET_BEST_FILE = "models/resnet_best.h5"
+RESNET_BEST_FILE = "../models/resnet_best.h5"
 
 # Dense のニューロン数
 DENSE_N_SIZE = 128

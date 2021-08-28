@@ -36,7 +36,7 @@ def pv_mct_time(st: State, md: Model):
 if __name__ == '__main__':
     cuda.get_current_device().reset()
 
-    model: Model = load_model("models/cnn_best.h5")
+    model: Model = load_model("../models/cnn_best.h5")
 
     state = State()
 
