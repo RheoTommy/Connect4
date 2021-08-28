@@ -9,7 +9,7 @@ from config import DENSE_BEST_FILE, CNN_BEST_FILE, RESNET_BEST_FILE, DENSE_LATES
 def cycle(files):
     for i in range(CYCLE_NUM):
         print("Train", i)
-        self_play(files[0])
+        self_play(files[0], True)
         train_network(files[0], files[1])
         updated = evaluate_change(files[0], files[1])
         if updated:
