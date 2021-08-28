@@ -6,7 +6,6 @@ from tensorflow.keras.models import load_model, Model
 from tensorflow.keras import backend as bk
 import numpy as np
 import pickle
-import ray
 
 
 # 先手にとってのゲーム結果
@@ -53,10 +52,10 @@ def self_play(best_model_path, debug=False):
     if debug:
         print("Self Play Started")
     for i in range(SELF_PLAY_COUNT):
-        h = play(model)
-        history.append(h)
         if debug:
             print("\rSelf Play {}/{}".format(i + 1, SELF_PLAY_COUNT), end=" ")
+        h = play(model)
+        history.append(h)
     if debug:
         print()
 

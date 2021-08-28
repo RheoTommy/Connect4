@@ -11,18 +11,28 @@ def cycle(files):
         print("Train", i)
         self_play(files[0], True)
         train_network(files[0], files[1])
-        updated = evaluate_change(files[0], files[1])
-        if updated:
-            evaluate_player(files[0])
+        evaluate_change(files[0], files[1])
+        vs_random, vs_pure, vs_uct = evaluate_player(files[0])
+        log_eval("../scores/{}_vs_random".format(files[2]), vs_random)
+        log_eval("../scores/{}_vs_pure_mct_search".format(files[2]), vs_pure)
+        log_eval("../scores/{}_vs_uct_search".format(files[2]), vs_uct)
+
+
+def log_eval(file_name, d):
+    with open(file_name, mode="a") as f:
+        f.write("{}\n".format(d))
 
 
 if __name__ == '__main__':
-    make_dense_model()
-    make_cnn_model()
     make_resnet_model()
-    dense_files = [DENSE_BEST_FILE, DENSE_LATEST_FILE]
-    cnn_files = [CNN_BEST_FILE, CNN_LATEST_FILE]
-    resnet_files = [RESNET_BEST_FILE, RESNET_LATEST_FILE]
-    cycle(dense_files)
-    cycle(cnn_files)
+    resnet_files = [RESNET_BEST_FILE, RESNET_LATEST_FILE, "ResNet"]
     cycle(resnet_files)
+    # make_dense_model()
+    # make_cnn_model()
+    # make_resnet_model()
+    # dense_files = [DENSE_BEST_FILE, DENSE_LATEST_FILE]
+    # cnn_files = [CNN_BEST_FILE, CNN_LATEST_FILE]
+    # resnet_files = [RESNET_BEST_FILE, RESNET_LATEST_FILE]
+    # cycle(dense_files)
+    # cycle(cnn_files)
+    # cycle(resnet_files)

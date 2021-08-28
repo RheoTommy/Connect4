@@ -59,6 +59,7 @@ def evaluate_algo(label, next_actions):
 
     ave_point = total_point / EVAL_COUNT
     print(label, ave_point)
+    return ave_point
 
 
 # アルゴリズムの評価
@@ -67,16 +68,17 @@ def evaluate_player(best_file):
     pv_action = pv_mct_search(model, 0.0)[1]
 
     next_actions = [pv_action, random_action]
-    evaluate_algo("{} VS Random".format(best_file), next_actions)
+    vs_random = evaluate_algo("{} VS Random".format(best_file), next_actions)
 
     next_actions = [pv_action, pure_mct_search_action(PURE_MCT_SEARCH_NUM)]
-    evaluate_algo("{} VS Pure mct search".format(best_file), next_actions)
+    vs_pure = evaluate_algo("{} VS Pure mct search".format(best_file), next_actions)
 
     next_actions = [pv_action, uct_mct_search_action(UCT_MCT_SEARCH_NUM, 10)]
-    evaluate_algo("{} VS UCT mct search action".format(best_file), next_actions)
+    vs_uct = evaluate_algo("{} VS UCT mct search action".format(best_file), next_actions)
 
     bk.clear_session()
     del model
+    return vs_random, vs_pure, vs_uct
 
 
 if __name__ == '__main__':
