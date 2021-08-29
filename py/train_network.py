@@ -1,4 +1,5 @@
-from config import INPUT_SHAPE, RN_EPOCHS, BATCH_SIZE, DENSE_LATEST_FILE, DENSE_BEST_FILE
+from config import INPUT_SHAPE, RN_EPOCHS, BATCH_SIZE, DENSE_LATEST_FILE, DENSE_BEST_FILE, RESNET_BEST_FILE, \
+    RESNET_LATEST_FILE
 from tensorflow.keras.callbacks import LearningRateScheduler, LambdaCallback
 from tensorflow.keras.models import load_model, Model
 from tensorflow.keras import backend as bk
@@ -26,7 +27,7 @@ def step_decay(epoch):
 
 def train_network(best_model_path, latest_model_path):
     history = load_data()
-    xs, y_policies, y_values = zip(*history[0])
+    xs, y_policies, y_values = zip(*history)
 
     a, b, c = INPUT_SHAPE
     xs = np.array(xs)
@@ -54,4 +55,4 @@ def train_network(best_model_path, latest_model_path):
 
 
 if __name__ == '__main__':
-    train_network(DENSE_BEST_FILE, DENSE_LATEST_FILE)
+    train_network(RESNET_BEST_FILE, RESNET_LATEST_FILE)

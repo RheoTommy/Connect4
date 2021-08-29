@@ -102,6 +102,6 @@ def pv_mct_search(model: Model, temp):
         return scores, root_node.w / root_node.n
 
     def action(st: State):
-        return np.random.choice(st.legal_actions(), p=score(st))
+        return np.random.choice(st.legal_actions(), p=score(st)[0])
 
     return score, action

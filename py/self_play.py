@@ -1,11 +1,21 @@
 from game import State
 from pv_mct_search import pv_mct_search
-from config import OUTPUT_SHAPE, SELF_PLAY_TEMP, SELF_PLAY_COUNT, DENSE_BEST_FILE, RESNET_BEST_FILE
+from config import OUTPUT_SHAPE, SELF_PLAY_TEMP, SELF_PLAY_COUNT, DENSE_BEST_FILE, RESNET_BEST_FILE, INPUT_SHAPE, W, H
 from datetime import datetime
 from tensorflow.keras.models import load_model, Model
 from tensorflow.keras import backend as bk
 import numpy as np
 import pickle
+
+
+# データサイズの修正
+def resize_block(blocks):
+    a, b, _ = INPUT_SHAPE
+    res = np.zeros((a, b))
+    for i in range(H):
+        for j in range(W):
+            res[i, j] = blocks[i, j]
+    return res
 
 
 # 先手にとってのゲーム結果
@@ -34,7 +44,8 @@ def play(model):
         policies = [0] * OUTPUT_SHAPE
         for ac, policy in zip(st.legal_actions(), scores):
             policies[ac] = policy
-        history.append([[st.pieces, st.enemy_pieces, st.block], policies, None])
+        history.append(
+            [[resize_block(st.pieces), resize_block(st.enemy_pieces), resize_block(st.block)], policies, None])
         action = np.random.choice(st.legal_actions(), p=scores)
         st = st.next_state(action)
 
@@ -55,7 +66,7 @@ def self_play(best_model_path, debug=False):
         if debug:
             print("\rSelf Play {}/{}".format(i + 1, SELF_PLAY_COUNT), end=" ")
         h = play(model)
-        history.append(h)
+        history.extend(h)
     if debug:
         print()
 
@@ -74,7 +85,8 @@ def improved_play(model):
         policies = [0] * OUTPUT_SHAPE
         for ac, policy in zip(st.legal_actions(), scores):
             policies[ac] = policy
-        history.append([[st.pieces, st.enemy_pieces, st.block], policies, value])
+        history.append(
+            [[resize_block(st.pieces), resize_block(st.enemy_pieces), resize_block(st.block)], policies, value])
         action = np.random.choice(st.legal_actions(), p=scores)
         st = st.next_state(action)
 
@@ -95,8 +107,8 @@ def improved_self_play(best_model_path, debug=False):
     for i in range(SELF_PLAY_COUNT):
         if debug:
             print("\rSelf Play {}/{}".format(i + 1, SELF_PLAY_COUNT), end=" ")
-        h = play(model)
-        history.append(h)
+        h = improved_play(model)
+        history.extend(h)
     if debug:
         print()
 
