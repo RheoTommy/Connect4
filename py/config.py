@@ -38,7 +38,7 @@ UCT_MCT_SEARCH_NUM = 100
 PV_MCT_SEARCH_NUM = 100
 
 # セルフプレイ一回のゲーム数
-SELF_PLAY_COUNT = 256
+SELF_PLAY_COUNT = 128
 
 # セルフプレイ時の温度パラメータ
 SELF_PLAY_TEMP = 1.0

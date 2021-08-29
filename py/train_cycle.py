@@ -1,4 +1,5 @@
 from dual_network import make_cnn_model, make_dense_model, make_resnet_model
+from py.randomized_game import evaluate_player_random
 from self_play import self_play
 from train_network import train_network
 from evaluating import evaluate_change, evaluate_player
@@ -8,7 +9,7 @@ from config import DENSE_BEST_FILE, CNN_BEST_FILE, RESNET_BEST_FILE, DENSE_LATES
 
 def cycle(files):
     for i in range(CYCLE_NUM):
-        print("Train", i)
+        print("Train", i + 1)
         self_play(files[0], True)
         train_network(files[0], files[1])
         evaluate_change(files[0], files[1])
@@ -16,6 +17,10 @@ def cycle(files):
         log_eval("../scores/{}_vs_random".format(files[2]), vs_random)
         log_eval("../scores/{}_vs_pure_mct_search".format(files[2]), vs_pure)
         log_eval("../scores/{}_vs_uct_search".format(files[2]), vs_uct)
+        vs_random, vs_pure, vs_uct = evaluate_player_random(files[0])
+        log_eval("../scores/{}_vs_random_in_random".format(files[2]), vs_random)
+        log_eval("../scores/{}_vs_pure_mct_search_in_random".format(files[2]), vs_pure)
+        log_eval("../scores/{}_vs_uct_search_in_random".format(files[2]), vs_uct)
 
 
 def log_eval(file_name, d):
