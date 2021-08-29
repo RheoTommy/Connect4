@@ -99,7 +99,7 @@ def pv_mct_search(model: Model, temp):
             scores[ac] = 1
         else:
             scores = boltzman(scores, temp)
-        return scores
+        return scores, root_node.w / root_node.n
 
     def action(st: State):
         return np.random.choice(st.legal_actions(), p=score(st))
