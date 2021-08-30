@@ -11,7 +11,7 @@ from tensorflow.keras import backend as bk
 
 
 def train(files):
-    self_play_parallel(files[0], True)
+    self_play_parallel(files[0])
     train_network(files[0], files[1])
     evaluate_change(files[0], files[1])
     vs_random, vs_pure, vs_uct = evaluate_player(files[0])
@@ -25,7 +25,7 @@ def train(files):
 
 
 def improved_train(files):
-    improved_self_play_parallel(files[0], True)
+    improved_self_play_parallel(files[0])
     train_network(files[0], files[1])
     evaluate_change(files[0], files[1])
     vs_random, vs_pure, vs_uct = evaluate_player(files[0])
