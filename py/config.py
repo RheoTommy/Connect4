@@ -1,4 +1,4 @@
-# 盤面の大きさ (最大 15)
+# 盤面の大きさ
 H = 6
 W = 7
 
@@ -9,20 +9,10 @@ INPUT_SHAPE = (6, 7, 3)
 OUTPUT_SHAPE = 7
 
 # モデルとファイル名
-DENSE_LATEST_FILE = "../models/dense_latest.h5"
-DENSE_BEST_FILE = "../models/dense_best.h5"
-CNN_LATEST_FILE = "../models/cnn_latest.h5"
-CNN_BEST_FILE = "../models/cnn_best.h5"
 RESNET_LATEST_FILE = "../models/resnet_latest.h5"
 RESNET_BEST_FILE = "../models/resnet_best.h5"
 IMPROVED_RESNET_LATEST_FILE = "../models/improved_resnet_latest.h5"
 IMPROVED_RESNET_BEST_FILE = "../models/improved_resnet_best.h5"
-
-# Dense のニューロン数
-DENSE_N_SIZE = 128
-
-# CNN の Conv のカーネル数
-CNN_N_SIZE = 128
 
 # ResNet の Conv のカーネル数
 RESNET_N_SIZE = 128
@@ -40,22 +30,22 @@ UCT_MCT_SEARCH_NUM = 50
 PV_MCT_SEARCH_NUM = 50
 
 # セルフプレイ一回のゲーム数
-SELF_PLAY_COUNT = 128
-# SELF_PLAY_COUNT = 32
+# SELF_PLAY_COUNT = 128
+SELF_PLAY_COUNT = 1
 
 # セルフプレイ時の温度パラメータ
 SELF_PLAY_TEMP = 1.0
 
 # 1 データの学習回数
-RN_EPOCHS = 100
-# RN_EPOCHS = 1
+# RN_EPOCHS = 100
+RN_EPOCHS = 1
 
 # 学習時のバッチサイズ
 BATCH_SIZE = 128
 
 # 評価時の対戦回数
-EVAL_COUNT = 25
-# EVAL_COUNT = 1
+# EVAL_COUNT = 25
+EVAL_COUNT = 1
 
 # 学習サイクルの実行回数
 CYCLE_NUM = 10
