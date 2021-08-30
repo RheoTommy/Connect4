@@ -1,5 +1,7 @@
 import time
 
+import ray
+
 from py.initialize.dual_network import initialize_network
 from py.game.pv_mct_search import pv_mct_search
 
@@ -23,17 +25,32 @@ def train(files, is_improved):
     process_parallel(files[0], is_improved, SELF_PLAY_COUNT)
     end = time.perf_counter()
     print(end - start)
+
+    start = time.perf_counter()
     train_network(files[0], files[1])
+    end = time.perf_counter()
+    print(end - start)
+
+    start = time.perf_counter()
     evaluate_change(files[0], files[1])
+    end = time.perf_counter()
+    print(end - start)
+
+    start = time.perf_counter()
     vs_random, vs_pure, vs_uct = evaluate_player(files[0], False)
     log_eval("../scores/{}_vs_random".format(files[2]), vs_random)
     log_eval("../scores/{}_vs_pure_mct_search".format(files[2]), vs_pure)
     log_eval("../scores/{}_vs_uct_search".format(files[2]), vs_uct)
+    end = time.perf_counter()
+    print(end - start)
 
+    start = time.perf_counter()
     vs_random, vs_pure, vs_uct = evaluate_player(files[0], True)
     log_eval("../scores/{}_vs_random_in_random".format(files[2]), vs_random)
     log_eval("../scores/{}_vs_pure_mct_search_in_random".format(files[2]), vs_pure)
     log_eval("../scores/{}_vs_uct_search_in_random".format(files[2]), vs_uct)
+    end = time.perf_counter()
+    print(end - start)
 
 
 if __name__ == '__main__':
@@ -41,6 +58,7 @@ if __name__ == '__main__':
         tf.config.experimental.set_memory_growth(device, True)
 
     initialize_network()
+    ray.init(num_cpus=16, num_gpus=1)
 
     resnet_files = [RESNET_BEST_FILE, RESNET_LATEST_FILE, "ResNet"]
     improved_resnet_files = [IMPROVED_RESNET_BEST_FILE, IMPROVED_RESNET_LATEST_FILE, "ImprovedResNet"]

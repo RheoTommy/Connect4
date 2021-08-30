@@ -93,7 +93,6 @@ def self_play_parallel(is_improved, num, weights):
 
 
 def process_parallel(path, is_improved, num):
-    ray.init(num_cpus=16, num_gpus=1)
     model: Model = load_model(path)
     weights = model.get_weights()
     weights = ray.put(weights)
