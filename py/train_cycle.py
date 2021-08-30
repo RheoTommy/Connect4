@@ -8,6 +8,7 @@ from config import RESNET_BEST_FILE, RESNET_LATEST_FILE, \
     CYCLE_NUM, IMPROVED_RESNET_BEST_FILE, IMPROVED_RESNET_LATEST_FILE
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras import backend as bk
+import tensorflow as tf
 
 
 def train(files):
@@ -44,6 +45,9 @@ def log_eval(file_name, d):
 
 
 if __name__ == '__main__':
+    for device in tf.config.experimental.list_physical_devices("GPU"):
+        tf.config.experimental.set_memory_growth(device, True)
+
     make_resnet_model()
     make_improved_resnet_model()
     resnet_files = [RESNET_BEST_FILE, RESNET_LATEST_FILE, "ResNet"]
