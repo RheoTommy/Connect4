@@ -30,22 +30,22 @@ UCT_MCT_SEARCH_NUM = 50
 PV_MCT_SEARCH_NUM = 50
 
 # セルフプレイ一回のゲーム数
-# SELF_PLAY_COUNT = 128
-SELF_PLAY_COUNT = 1
+SELF_PLAY_COUNT = 128
+# SELF_PLAY_COUNT = 16
 
 # セルフプレイ時の温度パラメータ
 SELF_PLAY_TEMP = 1.0
 
 # 1 データの学習回数
-# RN_EPOCHS = 100
-RN_EPOCHS = 1
+RN_EPOCHS = 100
+# RN_EPOCHS = 1
 
 # 学習時のバッチサイズ
 BATCH_SIZE = 128
 
 # 評価時の対戦回数
-# EVAL_COUNT = 25
-EVAL_COUNT = 1
+EVAL_COUNT = 25
+# EVAL_COUNT = 1
 
 # 学習サイクルの実行回数
 CYCLE_NUM = 10

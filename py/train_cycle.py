@@ -1,7 +1,9 @@
+import time
+
 from py.initialize.dual_network import initialize_network
 from py.game.pv_mct_search import pv_mct_search
 
-from py.self_play.self_play import process
+from py.self_play.self_play import process, process_parallel
 from py.train.train_network import train_network
 from py.evaluate.evaluating import evaluate_change, evaluate_player, evaluate_algo
 from config import RESNET_BEST_FILE, RESNET_LATEST_FILE, \
@@ -17,7 +19,10 @@ def log_eval(file_name, d):
 
 
 def train(files, is_improved):
-    process(files[0], is_improved, SELF_PLAY_COUNT)
+    start = time.perf_counter()
+    process_parallel(files[0], is_improved, SELF_PLAY_COUNT)
+    end = time.perf_counter()
+    print(end - start)
     train_network(files[0], files[1])
     evaluate_change(files[0], files[1])
     vs_random, vs_pure, vs_uct = evaluate_player(files[0], False)

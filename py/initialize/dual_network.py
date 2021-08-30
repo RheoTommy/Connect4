@@ -52,6 +52,30 @@ def make_resnet_model(path):
     del model
 
 
+def create_model():
+    inp = Input(shape=INPUT_SHAPE)
+
+    x = conv(RESNET_N_SIZE)(inp)
+    x = BatchNormalization()(x)
+    x = Activation("relu")(x)
+
+    for _ in range(RESNET_RESIDUAL_SIZE):
+        x = residual_block()(x)
+
+    x = GlobalAveragePooling2D()(x)
+
+    p = Dense(OUTPUT_SHAPE, activation="softmax", kernel_regularizer=l2(0.0005), name="pi")(x)
+    v = Dense(1, kernel_regularizer=l2(0.0005))(x)
+    v = Activation("tanh", name='v')(v)
+
+    model = Model(inputs=inp, outputs=[p, v])
+    return model
+
+
 def initialize_network():
     make_resnet_model(RESNET_BEST_FILE)
     make_resnet_model(IMPROVED_RESNET_BEST_FILE)
+
+
+if __name__ == '__main__':
+    initialize_network()
