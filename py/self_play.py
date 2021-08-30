@@ -1,9 +1,10 @@
 from game import State
 from pv_mct_search import pv_mct_search
-from config import OUTPUT_SHAPE, SELF_PLAY_TEMP, SELF_PLAY_COUNT
+from config import OUTPUT_SHAPE, SELF_PLAY_TEMP, SELF_PLAY_COUNT, RESNET_BEST_FILE
 from datetime import datetime
 from tensorflow.keras.models import load_model, Model
 from tensorflow.keras import backend as bk
+from concurrent.futures import ProcessPoolExecutor
 import numpy as np
 import pickle
 
@@ -66,6 +67,32 @@ def self_play(best_model_path, debug=False):
     del model
 
 
+def sub(num, path, label):
+    model: Model = load_model(path)
+    his = []
+    for i in range(num):
+        print("Self Play Sub, label:{}, {}/{}".format(label, i + 1, num))
+        h = play(model)
+        his.extend(h)
+    del model
+    return his
+
+
+def self_play_parallel(best_model_path):
+    res = []
+    with ProcessPoolExecutor(max_workers=16) as executor:
+        for x in range(16):
+            future = executor.submit(sub, SELF_PLAY_COUNT // 16, best_model_path, "{}/32".format(x + 1))
+            res.append(future)
+
+    history = []
+    for h in res:
+        history.extend(h.result())
+    write_data(history)
+
+    bk.clear_session()
+
+
 # 1 ゲーム分の学習
 def improved_play(model):
     history = []
@@ -106,3 +133,33 @@ def improved_self_play(best_model_path, debug=False):
 
     bk.clear_session()
     del model
+
+
+def improved_sub(num, path, label):
+    model: Model = load_model(path)
+    his = []
+    for i in range(num):
+        print("Self Play Sub, label:{}, {}/{}".format(label, i + 1, num))
+        h = improved_play(model)
+        his.extend(h)
+    del model
+    return his
+
+
+def improved_self_play_parallel(best_model_path):
+    res = []
+    with ProcessPoolExecutor(max_workers=16) as executor:
+        for x in range(16):
+            future = executor.submit(improved_sub, SELF_PLAY_COUNT // 16, best_model_path, "{}/32".format(x + 1))
+            res.append(future)
+
+    history = []
+    for h in res:
+        history.extend(h.result())
+    write_data(history)
+
+    bk.clear_session()
+
+
+if __name__ == '__main__':
+    self_play_parallel(RESNET_BEST_FILE)

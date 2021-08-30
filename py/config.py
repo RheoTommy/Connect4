@@ -31,31 +31,31 @@ RESNET_N_SIZE = 128
 RESNET_RESIDUAL_SIZE = 16
 
 # 原始モンテカルロ木探索の各アクションのランダム試行回数
-PURE_MCT_SEARCH_NUM = 100
+PURE_MCT_SEARCH_NUM = 50
 
 # UCT モンテカルロ木探索のランダム試行回数
-UCT_MCT_SEARCH_NUM = 100
+UCT_MCT_SEARCH_NUM = 50
 
 # ニューラルネットワーク近似を利用したモンテカルロ木探索のランダム試行回数
 PV_MCT_SEARCH_NUM = 50
 
 # セルフプレイ一回のゲーム数
-# SELF_PLAY_COUNT = 128
-SELF_PLAY_COUNT = 1
+SELF_PLAY_COUNT = 128
+# SELF_PLAY_COUNT = 32
 
 # セルフプレイ時の温度パラメータ
 SELF_PLAY_TEMP = 1.0
 
 # 1 データの学習回数
-# RN_EPOCHS = 100
-RN_EPOCHS = 1
+RN_EPOCHS = 100
+# RN_EPOCHS = 1
 
 # 学習時のバッチサイズ
 BATCH_SIZE = 128
 
 # 評価時の対戦回数
-# EVAL_COUNT = 25
-EVAL_COUNT = 1
+EVAL_COUNT = 25
+# EVAL_COUNT = 1
 
 # 学習サイクルの実行回数
 CYCLE_NUM = 10

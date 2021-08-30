@@ -1,7 +1,7 @@
 from dual_network import make_resnet_model, make_improved_resnet_model
 from py.pv_mct_search import pv_mct_search
 from py.randomized_game import evaluate_player_random, evaluate_algo_random
-from self_play import self_play, improved_self_play
+from self_play import improved_self_play_parallel, self_play_parallel
 from train_network import train_network
 from evaluating import evaluate_change, evaluate_player, evaluate_algo
 from config import RESNET_BEST_FILE, RESNET_LATEST_FILE, \
@@ -11,7 +11,7 @@ from tensorflow.keras import backend as bk
 
 
 def train(files):
-    self_play(files[0], True)
+    self_play_parallel(files[0], True)
     train_network(files[0], files[1])
     evaluate_change(files[0], files[1])
     vs_random, vs_pure, vs_uct = evaluate_player(files[0])
@@ -25,7 +25,7 @@ def train(files):
 
 
 def improved_train(files):
-    improved_self_play(files[0], True)
+    improved_self_play_parallel(files[0], True)
     train_network(files[0], files[1])
     evaluate_change(files[0], files[1])
     vs_random, vs_pure, vs_uct = evaluate_player(files[0])
