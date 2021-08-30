@@ -1,4 +1,4 @@
-from config import INPUT_SHAPE, RN_EPOCHS, BATCH_SIZE, DENSE_LATEST_FILE, DENSE_BEST_FILE, RESNET_BEST_FILE, \
+from config import INPUT_SHAPE, RN_EPOCHS, BATCH_SIZE, RESNET_BEST_FILE, \
     RESNET_LATEST_FILE
 from tensorflow.keras.callbacks import LearningRateScheduler, LambdaCallback
 from tensorflow.keras.models import load_model, Model

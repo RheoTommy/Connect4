@@ -1,8 +1,6 @@
 import random
 
-import numpy as np
-
-from config import H, W, EVAL_COUNT, PURE_MCT_SEARCH_NUM, UCT_MCT_SEARCH_NUM, RESNET_BEST_FILE
+from config import H, W, EVAL_COUNT, PURE_MCT_SEARCH_NUM, UCT_MCT_SEARCH_NUM
 from game import State, random_action
 from py.pure_mct_search import pure_mct_search_action
 from py.pv_mct_search import pv_mct_search
@@ -15,11 +13,11 @@ from tensorflow.keras import backend as bk
 def random_block():
     block_num = [3, 2, 2, 1, 1, 1, 0, 0, 0, 0]
     random.shuffle(block_num)
-    block = np.zeros((H, W))
+    block = [0] * (H * W)
     for j in range(W):
         for i in range(H):
             if block_num[j] != 0:
-                block[H - i - 1, j] = 1
+                block[(H - i - 1) * W + j] = 1
                 block_num[j] -= 1
     return block
 
@@ -78,7 +76,3 @@ def evaluate_player_random(best_file):
     bk.clear_session()
     del model
     return vs_random, vs_pure, vs_uct
-
-
-if __name__ == '__main__':
-    evaluate_player_random(RESNET_BEST_FILE)

@@ -1,13 +1,11 @@
-import tensorflow.keras
-
-from dual_network import make_cnn_model, make_dense_model, make_resnet_model, make_improved_resnet_model
+from dual_network import make_resnet_model, make_improved_resnet_model
 from py.pv_mct_search import pv_mct_search
 from py.randomized_game import evaluate_player_random, evaluate_algo_random
 from self_play import self_play, improved_self_play
 from train_network import train_network
 from evaluating import evaluate_change, evaluate_player, evaluate_algo
-from config import DENSE_BEST_FILE, CNN_BEST_FILE, RESNET_BEST_FILE, DENSE_LATEST_FILE, RESNET_LATEST_FILE, \
-    CNN_LATEST_FILE, CYCLE_NUM, IMPROVED_RESNET_BEST_FILE, IMPROVED_RESNET_LATEST_FILE
+from config import RESNET_BEST_FILE, RESNET_LATEST_FILE, \
+    CYCLE_NUM, IMPROVED_RESNET_BEST_FILE, IMPROVED_RESNET_LATEST_FILE
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras import backend as bk
 
@@ -58,7 +56,7 @@ if __name__ == '__main__':
 
         model0: Model = load_model(RESNET_BEST_FILE)
         model1: Model = load_model(IMPROVED_RESNET_BEST_FILE)
-        next_actions = [pv_mct_search(model0, 0.0)[1], pv_mct_search(model1, 0.0)[1]]
+        next_actions = [pv_mct_search(model1, 0.0)[1], pv_mct_search(model0, 0.0)[1]]
         improved_vs_normal = evaluate_algo("Improved VS Normal", next_actions)
         log_eval("../scores/improved_vs_normal", improved_vs_normal)
         improved_vs_normal_in_random = evaluate_algo_random("Improved VS Normal in random", next_actions)

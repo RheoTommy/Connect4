@@ -1,3 +1,4 @@
+import copy
 import random
 import numpy as np
 from config import H, W, is_in
@@ -6,23 +7,23 @@ from config import H, W, is_in
 # Connect4 の盤面を管理
 class State:
     def __init__(self, pieces=None, enemy_pieces=None, block=None):
-        self.pieces = pieces if pieces is not None else np.zeros(H * W).reshape((H, W))
-        self.enemy_pieces = enemy_pieces if enemy_pieces is not None else np.zeros(H * W).reshape((H, W))
-        self.block = block if block is not None else np.zeros(H * W).reshape((H, W))
+        self.pieces = pieces if pieces is not None else [0] * (H * W)
+        self.enemy_pieces = enemy_pieces if enemy_pieces is not None else [0] * (H * W)
+        self.block = block if block is not None else [0] * (H * W)
 
     @staticmethod
     def piece_count(pieces):
         count = 0
         for i in range(H):
             for j in range(W):
-                count += pieces[i, j] == 1
+                count += pieces[i * W + j] == 1
         return count
 
     def is_lose(self):
         # 4 並びかどうかの判定
         def is_comp(x, y, dx, dy):
             for _ in range(4):
-                if not is_in(x, y) or self.enemy_pieces[x, y] == 0:
+                if not is_in(x, y) or self.enemy_pieces[x * W + y] == 0:
                     return False
                 x += dx
                 y += dy
@@ -43,18 +44,19 @@ class State:
 
     # action は 0..W
     def next_state(self, action):
-        pieces = self.pieces.copy()
+        pieces = copy.deepcopy(self.pieces)
         for i in range(H - 1, -1, -1):
-            if self.pieces[i, action] == 0 and self.enemy_pieces[i, action] == 0 and self.block[i, action] == 0:
-                pieces[i, action] = 1
+            if self.pieces[i * W + action] == 0 and self.enemy_pieces[i * W + action] == 0 \
+                    and self.block[i * W + action] == 0:
+                pieces[i * W + action] = 1
                 break
-            assert i != 0, "{} にコマを置くことはできません".format(action)
-        return State(self.enemy_pieces.copy(), pieces, self.block.copy())
+            assert i != 0
+        return State(copy.deepcopy(self.enemy_pieces), pieces, copy.deepcopy(self.block))
 
     def legal_actions(self):
         actions = []
         for j in range(W):
-            if self.pieces[0, j] == 0 and self.enemy_pieces[0, j] == 0 and self.block[0, j] == 0:
+            if self.pieces[0 * W + j] == 0 and self.enemy_pieces[0 * W + j] == 0 and self.block[0 * W + j] == 0:
                 actions.append(j)
         return actions
 
@@ -66,15 +68,16 @@ class State:
         s = ""
         for i in range(H):
             for j in range(W):
-                if self.pieces[i, j] == 1:
+                if self.pieces[i * W + j] == 1:
                     s += ox[0]
-                elif self.enemy_pieces[i, j] == 1:
+                elif self.enemy_pieces[i * W + j] == 1:
                     s += ox[1]
-                elif self.block[i, j] == 1:
+                elif self.block[i * W + j] == 1:
                     s += '#'
                 else:
                     s += '-'
             s += '\n'
+        s += str(self.legal_actions())
         return s
 
 

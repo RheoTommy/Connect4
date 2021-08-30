@@ -3,7 +3,7 @@ from math import sqrt
 import numpy as np
 from tensorflow.keras.models import Model
 
-from config import INPUT_SHAPE, PV_MCT_SEARCH_NUM, H, W
+from config import INPUT_SHAPE, PV_MCT_SEARCH_NUM
 from game import State
 
 
@@ -13,19 +13,10 @@ def boltzman(xs, temp):
     return [x / sum(xs) for x in xs]
 
 
-def blank(xs, h, w):
-    a, b, _ = INPUT_SHAPE
-    res = np.zeros((a, b))
-    for i in range(h):
-        for j in range(w):
-            res[i, j] = xs[i, j]
-    return res
-
-
 # モデルと盤面を指定して方策と盤面評価値を返す
 def predict(model: Model, st: State):
     a, b, c = INPUT_SHAPE
-    x = np.array([blank(st.pieces, H, W), blank(st.enemy_pieces, H, W), blank(st.block, H, W)])
+    x = np.array([st.pieces, st.enemy_pieces, st.block])
     x = x.reshape((c, a, b)).transpose((1, 2, 0)).reshape((1, a, b, c))
 
     y = model.predict(x, batch_size=1)

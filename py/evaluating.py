@@ -2,7 +2,7 @@ from shutil import copy
 
 from tensorflow.keras.models import Model, load_model
 from pv_mct_search import pv_mct_search
-from py.config import EVAL_COUNT, DENSE_LATEST_FILE, DENSE_BEST_FILE, PURE_MCT_SEARCH_NUM, UCT_MCT_SEARCH_NUM
+from py.config import EVAL_COUNT, PURE_MCT_SEARCH_NUM, UCT_MCT_SEARCH_NUM
 from py.game import play, random_action
 import tensorflow.keras.backend as bk
 
@@ -79,7 +79,3 @@ def evaluate_player(best_file):
     bk.clear_session()
     del model
     return vs_random, vs_pure, vs_uct
-
-
-if __name__ == '__main__':
-    evaluate_player(DENSE_BEST_FILE)

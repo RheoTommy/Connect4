@@ -142,6 +142,5 @@ def make_improved_resnet_model():
 
 
 if __name__ == '__main__':
-    make_dense_model()
-    make_cnn_model()
     make_resnet_model()
+    make_improved_resnet_model()
