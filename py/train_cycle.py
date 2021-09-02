@@ -99,7 +99,8 @@ if __name__ == '__main__':
     for i in range(CYCLE_NUM):
         print("Train Cycle {}".format(i + 1))
 
-        train(resnet_files, False)
+        if i != 0:
+            train(resnet_files, False)
         train(improved_resnet_files, True)
 
         s = time.perf_counter()
