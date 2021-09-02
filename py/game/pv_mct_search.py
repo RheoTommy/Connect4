@@ -1,3 +1,4 @@
+import gc
 from math import sqrt
 
 import numpy as np
@@ -19,6 +20,7 @@ def predict(model, st: State):
     x = x.reshape((c, a, b)).transpose((1, 2, 0)).reshape((1, a, b, c))
 
     y = model.predict(x, batch_size=1)
+    gc.collect()
 
     policies = y[0][0][list(st.legal_actions())]
     policies /= sum(policies) if sum(policies) else 1
