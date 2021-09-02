@@ -1,4 +1,3 @@
-import gc
 import time
 
 import ray
@@ -85,8 +84,6 @@ def train(files, is_improved):
 
     end = time.perf_counter()
     print("Evaluate", end - start)
-
-    gc.collect()
 
 
 if __name__ == '__main__':
