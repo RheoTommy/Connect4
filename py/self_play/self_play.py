@@ -10,8 +10,6 @@ from py.game.game import State
 from py.game.pv_mct_search import pv_mct_search
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras import backend as bk
-from sys import argv
-import tensorflow as tf
 
 from py.initialize.dual_network import create_model
 
